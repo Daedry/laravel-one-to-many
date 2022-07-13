@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
-use App\Model\Post;
 use Illuminate\Support\Str;
+use App\Models\Post;
 class PostSeeder extends Seeder
 {
     /**
