@@ -6,7 +6,7 @@
     <h2>Edit - {{$post->title}}</h2>
     @include('partials.errors')
 
-    <form action="{{route('admin.posts.update', $post->id)}}" method="post">
+    <form action="{{route('admin.posts.update', $post->slug)}}" method="post">
         @csrf
         @method('PUT')
 
@@ -32,7 +32,7 @@
             <select id="category_id" class="form-control @error('category_id') is-invalid @enderror" name="category_id">
                 <option value="">Select a category</option>
                 @foreach ($categories as $category)
-                <option value="{{$category->id}}" {{$category->id == old('category_id', $post->category->id)  ? 'selected' : '' }}>{{$category->name}}</option>
+                <option value="{{$category->id}}" {{ $category->id == old('category_id', $post->category ? $post->category->id : '' ) ? 'selected' : ''  }}>{{$category->name}}</option>
                 @endforeach
             </select>
         </div>
@@ -43,7 +43,7 @@
             </textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary ">Add Post</button>
+        <button type="submit" class="btn btn-primary ">Update Post</button>
 
     </form>
 </div>

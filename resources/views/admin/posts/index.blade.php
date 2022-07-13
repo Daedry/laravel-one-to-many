@@ -8,11 +8,7 @@
         <div><a href="{{route('admin.posts.create')}}" class="btn btn-primary">Add Post</a></div>
     </div>
 
-    @if(session('message'))
-    <div class="alert alert-success">
-        {{session('message')}}
-    </div>
-    @endif
+    @include('partials.session_message')
 
     <table class="table table-striped table-inverse table-responsive">
 
@@ -35,11 +31,11 @@
                 <td>{{$post->content}}</td>
                 <td><img width="180px" src="{{$post->cover_image}}" alt="Cover image {{$post->title}}"></td>
                 <td>
-                    <a class="btn btn-primary text-white btn-sm" href="{{route('admin.posts.show', $post->id)}}">View</a>
-                    <a class="btn btn-secondary text-white btn-sm mt-2" href="{{route('admin.posts.edit', $post->id)}}"> Edit </a>
+                    <a class="btn btn-primary text-white btn-sm" href="{{route('admin.posts.show', $post->slug)}}">View</a>
+                    <a class="btn btn-secondary text-white btn-sm mt-2" href="{{route('admin.posts.edit', $post->slug)}}"> Edit </a>
 
                     <!-- Button trigger modal -->
-                    <form action="{{route('admin.posts.destroy', $post->id)}}" method="post">
+                    <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
                         @csrf
                         @method('DELETE')
 
