@@ -18,7 +18,17 @@
         <div class="form-goup my-4">
             <label for="cover_image">Cover Image</label>
             <input type="text" name="cover_image" id="cover_image" class="form-control @error('cover_image') is-invalid @enderror" placeholder="Learn php article" aria-describedby="cover_imageHelper" value="{{old('cover_image')}}">
-            <small id="cover_imageHelper" class="text-muted">Type the post title, max 150 characters</small>
+            <small id="cover_imageHelper" class="text-muted">Type the post cover image</small>
+        </div>
+
+        <div class="form-group">
+            <label for="category_id">Categories</label>
+            <select id="category_id" class="form-control" name="category_id">
+                <option value="">Select a category</option>
+                @foreach ($categories as $category)
+                <option value="{{$category->id}}"  >{{$category->name}}</option>
+                @endforeach
+            </select>
         </div>
 
         <div class="form-group">

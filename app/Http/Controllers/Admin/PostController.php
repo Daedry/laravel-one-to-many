@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,12 +24,13 @@ class PostController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param  \App\Model\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Post $post)
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+        return view('admin.posts.create', compact('categories', 'post'));
     }
 
     /**
@@ -54,7 +55,7 @@ class PostController extends Controller
         Post::create($val_data);
 
         // Redirect
-        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully');
+        return redirect()->route('admin.posts.index')->with('message', 'Post created successfully');
     }
 
     /**
@@ -76,7 +77,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
