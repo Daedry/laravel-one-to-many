@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -15,18 +17,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::orderByDesc('id')->get();
+        return view('admin.categories.index', compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,29 +30,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // dd($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
+        // validare data
+        $val_data = $request->validate([
+            'name' => 'required|unique:categories',
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        // creare slug
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        // salvare 
+        Category::create($val_data);
+
+        //reindirizzare
+        return redirect()->back()->with('message', "Category $slug added successfully!");
     }
 
     /**
@@ -70,7 +57,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+
+        // validare data
+        $val_data = $request->validate([
+            'name' => ['required', Rule::unique('categories')->ignore($category)]
+        ]);
+
+        // creare slug
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        // salvare
+        $category->update($val_data);
+
+        //reindirizzare
+        return redirect()->back()->with('message', "Category $slug updated successfully!");
     }
 
     /**
@@ -81,6 +82,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back()->with('message', "Category $category->name deleted successfully!");
     }
 }
